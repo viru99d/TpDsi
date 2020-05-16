@@ -13,6 +13,7 @@ namespace AgregarCarrito_openShop
             FormasPagos.Add(new FormasPago("Tarjeta en 6 cuotas sin interés"));
             FormasPagos.Add(new FormasPago("Débito"));
 
+            // Voy pedir productos de manera infinita hasta que el usuario diga basta
             while (true)
             {
                 var finalizado = Comprar();
@@ -24,6 +25,7 @@ namespace AgregarCarrito_openShop
             }
 
             AgregarPago();
+
             System.Console.WriteLine("Gracias por su compra, vuelva pronto");
         }
 
@@ -33,18 +35,16 @@ namespace AgregarCarrito_openShop
 
             System.Console.WriteLine();
             System.Console.WriteLine("Seleccione un producto");
-
             var opcionProducto = System.Console.ReadLine();
             var producto = RegistroProductos.Productos[int.Parse(opcionProducto) - 1];
-
-            Carrito.Agregar(producto);
 
             System.Console.WriteLine();
             System.Console.WriteLine("Introduzca la cantidad de productos que desea comprar:");
             var opcionCantidad = System.Console.ReadLine();
             int cantidadElegida = (int.Parse(opcionCantidad));
 
-            Carrito.MostrarCarrito(cantidadElegida);
+            Carrito.Agregar(producto, cantidadElegida);
+            Carrito.MostrarCarrito();
 
             System.Console.WriteLine("");
             System.Console.WriteLine("Digite 1 para seguir comprando, 2 para abonar los productos del carrito");
@@ -82,15 +82,6 @@ namespace AgregarCarrito_openShop
         }
     }
 
-    class Cantidad
-    {
-        public int Unidad { get; set; }
-
-        public Cantidad(int unidad)
-        {
-            Unidad = unidad;
-        }
-    }
     class FormasPago
     {
         public string Tipo { get; set; }
@@ -102,26 +93,41 @@ namespace AgregarCarrito_openShop
     }
     class Carrito
     {
-        private List<Producto> Productos = new List<Producto>();
+        private List<ProductoEnCarrito> Productos = new List<ProductoEnCarrito>();
 
-        public void Agregar(Producto producto)
+        public void Agregar(Producto producto, int cantidad)
         {
-            Productos.Add(producto);
+            var prodEnCarrito = new ProductoEnCarrito();
+            prodEnCarrito.Producto = producto;
+            prodEnCarrito.Cantidad = cantidad;
+
+            Productos.Add(prodEnCarrito);
         }
 
-        public void MostrarCarrito(int cantidadElegida)
+        public void MostrarCarrito()
         {
-            decimal sumaCarrito = 0;
             System.Console.WriteLine("");
             System.Console.WriteLine("Tienes en tu carrito: ");
 
+            decimal totalCarrito = 0;
             foreach (var productoEnCarrito in Productos)
             {
-                System.Console.WriteLine(cantidadElegida + "x " + productoEnCarrito.Nombre + " " + productoEnCarrito.Marca + " $" + productoEnCarrito.Precio + " c/u");
-                sumaCarrito = sumaCarrito + (productoEnCarrito.Precio * cantidadElegida);
-                System.Console.WriteLine("Total: $" + sumaCarrito);
+                var cantidad = productoEnCarrito.Cantidad;
+                var precio = productoEnCarrito.Producto.Precio;
+                var nombre = productoEnCarrito.Producto.Nombre;
+                System.Console.WriteLine(cantidad + "x " + nombre + " $" + cantidad * precio);
+
+                totalCarrito = totalCarrito + cantidad * precio;
             }
+
+            System.Console.WriteLine("Total: $" + totalCarrito);
         }
+    }
+
+    class ProductoEnCarrito
+    {
+        public Producto Producto { get; set; }
+        public int Cantidad { get; set; }
     }
 
     class Producto
