@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "AgregarCarrito-openShop/1.0.0": {
+        "runtime": {
+          "AgregarCarrito-openShop.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AgregarCarrito-openShop/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

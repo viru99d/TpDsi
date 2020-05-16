@@ -73,8 +73,28 @@ namespace AgregarCarrito_openShop
 
             System.Console.WriteLine();
             System.Console.WriteLine("Seleccione una forma de pago (Digite 1 o 2)");
-            var seleccion2 = System.Console.ReadLine();
-            var formasPagos = FormasPagos[int.Parse(seleccion2) - 1];
+
+            FormasPago formasPagos;
+
+            while (true)
+            {
+                var seleccionPago = System.Console.ReadLine();
+                if (int.TryParse(seleccionPago, out var value))
+                {
+                    if (value >= 1 && value <= 2)
+                    {
+                        formasPagos = FormasPagos[value - 1];
+                        break;
+                    }
+
+                    else
+                    {
+                        System.Console.WriteLine("Ingrese un valor correcto,solo 1 o 2");
+                    }
+                      
+                }
+            }
+
             System.Console.WriteLine("La forma de pago elegida fue: " + formasPagos.Tipo);
             System.Console.WriteLine("");
 
