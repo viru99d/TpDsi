@@ -10,6 +10,7 @@ namespace AgregarCarrito_openShop
 
         static void Main(string[] args)
         {
+            
             FormasPagos.Add(new FormasPago("Tarjeta en 6 cuotas sin interés"));
             FormasPagos.Add(new FormasPago("Débito"));
 
@@ -35,21 +36,39 @@ namespace AgregarCarrito_openShop
 
             System.Console.WriteLine();
             System.Console.WriteLine("Seleccione un producto");
-            var opcionProducto = System.Console.ReadLine();
-            var producto = RegistroProductos.Productos[int.Parse(opcionProducto) - 1];
 
-            System.Console.WriteLine();
-            System.Console.WriteLine("Introduzca la cantidad de productos que desea comprar:");
-            var opcionCantidad = System.Console.ReadLine();
-            int cantidadElegida = (int.Parse(opcionCantidad));
+            while (true)
+            {
+                var opcionProducto = System.Console.ReadLine();
+                if(int.TryParse(opcionProducto, out var value))
+                {
+                    if (value >= 1 && value <= RegistroProductos.Productos.Count)
+                    {
+                        var producto = RegistroProductos.Productos[int.Parse(opcionProducto) - 1];
+                        System.Console.WriteLine();
+                        System.Console.WriteLine("Introduzca la cantidad de productos que desea comprar:");
+                        var opcionCantidad = System.Console.ReadLine();
+                        int cantidadElegida = (int.Parse(opcionCantidad));
 
-            Carrito.Agregar(producto, cantidadElegida);
-            Carrito.MostrarCarrito();
+                        Carrito.Agregar(producto, cantidadElegida);
+                        Carrito.MostrarCarrito();
+                        break;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("VALOR INCORRECTO, Ingrese un valor mayor a 1 y menor a " + RegistroProductos.Productos.Count);
+                    }
+                }
+
+            }
+            
+
 
             System.Console.WriteLine("");
             System.Console.WriteLine("Digite 1 para seguir comprando, 2 para abonar los productos del carrito");
 
-            while(true)
+            
+            while (true)
             {
                 var opcionSeguir = System.Console.ReadLine();
                 if(int.TryParse(opcionSeguir, out var value))
@@ -69,13 +88,13 @@ namespace AgregarCarrito_openShop
                     }
                     else
                     {
-                     System.Console.WriteLine("Ingrese un valor correcto,solo 1 o 2");
+                     System.Console.WriteLine("VALOR INCORRECTO, ingrese 1 o 2");
                     }
                 }
             }
           
         }
-
+        
         static public void AgregarPago()
         {
             System.Console.WriteLine();
@@ -105,7 +124,7 @@ namespace AgregarCarrito_openShop
 
                     else
                     {
-                        System.Console.WriteLine("Ingrese un valor correcto,solo 1 o 2");
+                        System.Console.WriteLine("Ingrese un valor correcto, solo 1 o 2");
                     }
                       
                 }
