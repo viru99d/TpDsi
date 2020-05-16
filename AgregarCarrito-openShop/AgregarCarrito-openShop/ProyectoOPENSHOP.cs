@@ -48,16 +48,32 @@ namespace AgregarCarrito_openShop
 
             System.Console.WriteLine("");
             System.Console.WriteLine("Digite 1 para seguir comprando, 2 para abonar los productos del carrito");
-            var opcionSeguir = System.Console.ReadLine();
 
-            if (int.Parse(opcionSeguir) == 1)
+            while(true)
             {
-                return false;
+                var opcionSeguir = System.Console.ReadLine();
+                if(int.TryParse(opcionSeguir, out var value))
+                {
+                    if(value >= 1 && value <= 2)
+                    {
+                        if(value == 1)
+                        {
+                            return false;
+                            
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    
+                    }
+                    else
+                    {
+                     System.Console.WriteLine("Ingrese un valor correcto,solo 1 o 2");
+                    }
+                }
             }
-            else
-            {
-                return true;
-            }
+          
         }
 
         static public void AgregarPago()
@@ -98,7 +114,7 @@ namespace AgregarCarrito_openShop
             System.Console.WriteLine("La forma de pago elegida fue: " + formasPagos.Tipo);
             System.Console.WriteLine("");
 
-            // Aqui podriamos convertir el carrito en un objeto Venta y asignar la forma de pago
+           
         }
     }
 
