@@ -33,16 +33,16 @@ namespace AgregarCarrito_openShop
 
             while (true)
             {
-                var opcionProducto = System.Console.ReadLine();
-                if (int.TryParse(opcionProducto, out var value))
+                var opcionElegidaProducto = System.Console.ReadLine();
+                if (int.TryParse(opcionElegidaProducto, out var value))
                 {
                     if (value >= 1 && value <= RegistroProductos.Productos.Count)
                     {
-                        var producto = RegistroProductos.Productos[int.Parse(opcionProducto) - 1];
+                        var producto = RegistroProductos.Productos[int.Parse(opcionElegidaProducto) - 1];
                         
                         System.Console.WriteLine("\nIntroduzca la cantidad de productos que desea comprar:");
-                        var opcionCantidad = System.Console.ReadLine();
-                        int cantidadElegida = (int.Parse(opcionCantidad));
+                        var opcionElegidaCantidad = System.Console.ReadLine();
+                        int cantidadElegida = (int.Parse(opcionElegidaCantidad));
 
                         Carrito.Agregar(producto, cantidadElegida);
                         Carrito.MostrarCarrito();
@@ -57,8 +57,8 @@ namespace AgregarCarrito_openShop
 
             while (true)
             {
-                var opcionSeguir = System.Console.ReadLine();
-                if (int.TryParse(opcionSeguir, out var value))
+                var opcionElegidaSeguir = System.Console.ReadLine();
+                if (int.TryParse(opcionElegidaSeguir, out var value))
                 {
                     if (value >= 1 && value <= 2)
                     {
@@ -89,8 +89,8 @@ namespace AgregarCarrito_openShop
 
             while (true)
             {
-                var seleccionPago = System.Console.ReadLine();
-                if (int.TryParse(seleccionPago, out var value))
+                var opcionElegidaPago = System.Console.ReadLine();
+                if (int.TryParse(opcionElegidaPago, out var value))
                 {
                     if (value >= 1 && value <= 2)
                     {
@@ -171,9 +171,9 @@ namespace AgregarCarrito_openShop
             }
 
             Console.WriteLine("\nDesea seguir navegando en Open Shop?   \n1- Sí \n2- No");
-            var opcionOperar = int.Parse(Console.ReadLine());
+            var opcionElegidaSeguir = int.Parse(Console.ReadLine());
             Console.Clear();
-            if (opcionOperar == 1) return false;
+            if (opcionElegidaSeguir == 1) return false;
  
             else return true;
         }
