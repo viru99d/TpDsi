@@ -7,46 +7,40 @@ namespace AgregarCarrito_openShop
     {
         static Carrito Carrito = new Carrito();
         static List<FormasPago> FormasPagos = new List<FormasPago>();
+        static List<Venta> Ventas = new List<Venta>();
 
         static void Main(string[] args)
         {
-            
             FormasPagos.Add(new FormasPago("Tarjeta en 6 cuotas sin interés"));
             FormasPagos.Add(new FormasPago("Débito"));
 
-            // Voy pedir productos de manera infinita hasta que el usuario diga basta
             while (true)
             {
-                var finalizado = Comprar();
+                var finalizado = ProcesoDeVenta();
 
-                if (finalizado)
-                {
-                    break;
-                }
+                if (finalizado) break;
+
             }
 
-            AgregarPago();
-
-            System.Console.WriteLine("Gracias por su compra, vuelva pronto");
+            System.Console.WriteLine("\nGracias por su compra, vuelva pronto");
         }
 
         static public bool Comprar()
         {
             RegistroProductos.MostrarProductos();
 
-            System.Console.WriteLine();
-            System.Console.WriteLine("Seleccione un producto");
+            System.Console.WriteLine("\nSeleccione un producto");
 
             while (true)
             {
                 var opcionProducto = System.Console.ReadLine();
-                if(int.TryParse(opcionProducto, out var value))
+                if (int.TryParse(opcionProducto, out var value))
                 {
                     if (value >= 1 && value <= RegistroProductos.Productos.Count)
                     {
                         var producto = RegistroProductos.Productos[int.Parse(opcionProducto) - 1];
-                        System.Console.WriteLine();
-                        System.Console.WriteLine("Introduzca la cantidad de productos que desea comprar:");
+                        
+                        System.Console.WriteLine("\nIntroduzca la cantidad de productos que desea comprar:");
                         var opcionCantidad = System.Console.ReadLine();
                         int cantidadElegida = (int.Parse(opcionCantidad));
 
@@ -54,51 +48,34 @@ namespace AgregarCarrito_openShop
                         Carrito.MostrarCarrito();
                         break;
                     }
-                    else
-                    {
-                        System.Console.WriteLine("VALOR INCORRECTO, Ingrese un valor mayor a 1 y menor a " + RegistroProductos.Productos.Count);
-                    }
+                    else System.Console.WriteLine("VALOR INGRESADO INCORRECTO, Ingrese un valor mayor a 1 y menor a " + RegistroProductos.Productos.Count);
+                    
                 }
-
             }
-            
 
+            System.Console.WriteLine("\n¿Que desea hacer?: \n1- Seguir comprando \n2- Abonar los productos del carrito");
 
-            System.Console.WriteLine("");
-            System.Console.WriteLine("Digite 1 para seguir comprando, 2 para abonar los productos del carrito");
-
-            
             while (true)
             {
                 var opcionSeguir = System.Console.ReadLine();
-                if(int.TryParse(opcionSeguir, out var value))
+                if (int.TryParse(opcionSeguir, out var value))
                 {
-                    if(value >= 1 && value <= 2)
+                    if (value >= 1 && value <= 2)
                     {
-                        if(value == 1)
-                        {
-                            return false;
-                            
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    
+                        if (value == 1) return false;
+                        
+                        else return true;
+                        
                     }
-                    else
-                    {
-                     System.Console.WriteLine("VALOR INCORRECTO, ingrese 1 o 2");
-                    }
+                    else System.Console.WriteLine("\nVALOR INGRESADO INCORRECTO, ingrese 1 o 2");
+
                 }
             }
-          
         }
-        
-        static public void AgregarPago()
+
+        static public FormasPago AgregarPago()
         {
-            System.Console.WriteLine();
-            System.Console.WriteLine("Formas de pago:");
+            System.Console.WriteLine("\n-Formas de pago:");
             int pos = 1;
             foreach (var pago in FormasPagos)
             {
@@ -106,8 +83,7 @@ namespace AgregarCarrito_openShop
                 pos++;
             }
 
-            System.Console.WriteLine();
-            System.Console.WriteLine("Seleccione una forma de pago (Digite 1 o 2)");
+            System.Console.WriteLine("\nSeleccione una forma de pago:");
 
             FormasPago formasPagos;
 
@@ -122,69 +98,87 @@ namespace AgregarCarrito_openShop
                         break;
                     }
 
-                    else
-                    {
-                        System.Console.WriteLine("Ingrese un valor correcto, solo 1 o 2");
-                    }
-                      
+                    else System.Console.WriteLine("\nVALOR INGRESADO INCORRECTO, Ingrese 1 o 2");
                 }
             }
 
-            System.Console.WriteLine("La forma de pago elegida fue: " + formasPagos.Tipo);
-            System.Console.WriteLine("");
-
-           
-        }
-    }
-
-    class FormasPago
-    {
-        public string Tipo { get; set; }
-        public FormasPago(string tipo)
-        {
-            Tipo = tipo;
+            System.Console.WriteLine("\nLa forma de pago elegida fue: " + formasPagos.Tipo);
+        
+            return formasPagos;
         }
 
-    }
-    class Carrito
-    {
-        private List<ProductoEnCarrito> Productos = new List<ProductoEnCarrito>();
-
-        public void Agregar(Producto producto, int cantidad)
+        static public bool ProcesoDeVenta()
         {
-            var prodEnCarrito = new ProductoEnCarrito();
-            prodEnCarrito.Producto = producto;
-            prodEnCarrito.Cantidad = cantidad;
+            Console.WriteLine("\nBienvenidos al menú de Open Shop, seleccione lo que desea hacer");
+            Console.WriteLine("\n1- Comprar productos \n2- Preparar un pedido");
 
-            Productos.Add(prodEnCarrito);
-        }
-
-        public void MostrarCarrito()
-        {
-            System.Console.WriteLine("");
-            System.Console.WriteLine("Tienes en tu carrito: ");
-
-            decimal totalCarrito = 0;
-            foreach (var productoEnCarrito in Productos)
+            while (true)
             {
-                var cantidad = productoEnCarrito.Cantidad;
-                var precio = productoEnCarrito.Producto.Precio;
-                var nombre = productoEnCarrito.Producto.Nombre;
-                System.Console.WriteLine(cantidad + "x " + nombre + " $" + cantidad * precio);
+                var opcionElegidaMenu = (Console.ReadLine());
+                Console.Clear();
+                if (int.TryParse(opcionElegidaMenu, out var value))
+                {
+                    if (value >= 1 && value <= 2)
+                    {
+                        if (value == 1)
+                        {
+                            while (true)
+                            {
+                                var finalizado = Comprar();
 
-                totalCarrito = totalCarrito + cantidad * precio;
+                                if (finalizado)
+                                {
+                                    break;
+                                }
+                            }
+
+                            var pago = AgregarPago();
+                            var productos = Carrito.ProductosDelCarrito();
+                            var venta = new Venta(productos, pago);
+
+                            Ventas.Add(venta);
+                            break;
+                        }
+
+                        else
+                        {
+                            int contadorPedidos = 1;
+                            Console.WriteLine("OPEN SHOP - Lista de pedidos");
+                            
+                            if (Ventas.Count > 0)
+                            {
+                                foreach (var venta in Ventas)
+                                {
+                                    Console.WriteLine("\n-Pedido N°:"  +contadorPedidos);
+                                    Console.WriteLine("-Fecha:" + venta.Fecha.ToShortDateString());
+                                    venta.Carrito.MostrarCarrito();
+                                    venta.FormasPagos.MostrarFormasPagos();
+                                    contadorPedidos++;
+                                    Console.WriteLine("_________________________________________________");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No hay pedidos registrados");
+                            }
+
+                            break;
+                        }
+
+                    }
+                    else System.Console.WriteLine("\nVALOR INGRESADO INCORRECTO, ingrese 1 o 2");
+                }
             }
 
-            System.Console.WriteLine("Total: $" + totalCarrito);
+            Console.WriteLine("\nDesea seguir navegando en Open Shop?   \n1- Sí \n2- No");
+            var opcionOperar = int.Parse(Console.ReadLine());
+            Console.Clear();
+            if (opcionOperar == 1) return false;
+ 
+            else return true;
         }
     }
-
-    class ProductoEnCarrito
-    {
-        public Producto Producto { get; set; }
-        public int Cantidad { get; set; }
-    }
-
+   
     class Producto
     {
         public string Nombre { get; set; }
@@ -208,13 +202,13 @@ namespace AgregarCarrito_openShop
             Productos.Add(new Producto("Televisor", 22000, "Sony"));
             Productos.Add(new Producto("Ojotas", 700, "Havaianas"));
             Productos.Add(new Producto("Teclado", 6500.99m, "Razer"));
+            Productos.Add(new Producto("Notebook", 300000, "Predator"));
         }
 
         static public void MostrarProductos()
         {
-            System.Console.WriteLine();
-            System.Console.WriteLine("OPEN SHOP");
-            System.Console.WriteLine("Listado de productos:");
+            System.Console.WriteLine("\nOPEN SHOP - Listado de productos:");
+            
             int pos = 1;
             foreach (var producto in Productos)
             {
@@ -223,4 +217,79 @@ namespace AgregarCarrito_openShop
             }
         }
     }
+    class Carrito
+    {
+        private List<ProductoEnCarrito> Productos = new List<ProductoEnCarrito>();
+
+        public void Agregar(Producto producto, int cantidad)
+        {
+            var prodEnCarrito = new ProductoEnCarrito();
+            prodEnCarrito.Producto = producto;
+            prodEnCarrito.Cantidad = cantidad;
+
+            Productos.Add(prodEnCarrito);
+        }
+
+        public List<ProductoEnCarrito> ProductosDelCarrito()
+        {
+            return Productos;
+        }
+
+        public void MostrarCarrito()
+        {
+            System.Console.WriteLine("\nActualmente tienes en el carrito: ");
+
+            decimal totalCarrito = 0;
+            foreach (var productoEnCarrito in Productos)
+            {
+                var cantidad = productoEnCarrito.Cantidad;
+                var precio = productoEnCarrito.Producto.Precio;
+                var nombre = productoEnCarrito.Producto.Nombre;
+                System.Console.WriteLine(cantidad + "x " + nombre + " $" + cantidad * precio);
+
+                totalCarrito = totalCarrito + cantidad * precio;
+            }
+
+            System.Console.WriteLine("Total: $" + totalCarrito);
+        }
+    }
+    class ProductoEnCarrito
+    {
+        public Producto Producto { get; set; }
+        public int Cantidad { get; set; }
+    }
+
+    class Venta
+    {
+        public FormasPago FormasPagos { get; set; }
+        public Carrito Carrito { get; set; }
+        public DateTime Fecha { get; set; }
+
+        public Venta(List<ProductoEnCarrito> Productos, FormasPago formasPago)
+        {
+            Carrito = new Carrito();
+            Fecha = DateTime.Now;
+            FormasPagos = formasPago;
+
+            foreach (var producto in Productos)
+            {
+                Carrito.Agregar(producto.Producto, producto.Cantidad);
+            }
+        }
+    }
+
+    class FormasPago
+    {
+        public string Tipo { get; set; }
+        public FormasPago(string tipo)
+        {
+            Tipo = tipo;
+        }
+
+        public void MostrarFormasPagos()
+        {
+            Console.WriteLine("\nForma de pago: " + Tipo);
+        }
+    }
 }
+
