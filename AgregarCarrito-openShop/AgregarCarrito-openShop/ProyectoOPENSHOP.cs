@@ -53,11 +53,12 @@ namespace AgregarCarrito_openShop
                 }
             }
 
-            System.Console.WriteLine("\n¿Que desea hacer?: \n1- Seguir comprando \n2- Abonar los productos del carrito");
-
+            System.Console.WriteLine("\n¿Que desea hacer? \n1- Seguir comprando \n2- Abonar los productos del carrito");
+            
             while (true)
             {
                 var opcionElegidaSeguir = System.Console.ReadLine();
+                Console.Clear();
                 if (int.TryParse(opcionElegidaSeguir, out var value))
                 {
                     if (value >= 1 && value <= 2)
@@ -72,6 +73,8 @@ namespace AgregarCarrito_openShop
                 }
             }
         }
+
+        
 
         static public FormasPago AgregarPago()
         {
