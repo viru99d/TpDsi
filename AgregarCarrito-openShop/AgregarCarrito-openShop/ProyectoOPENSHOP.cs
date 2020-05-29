@@ -49,7 +49,6 @@ namespace AgregarCarrito_openShop
                         break;
                     }
                     else System.Console.WriteLine("VALOR INGRESADO INCORRECTO, Ingrese un valor mayor a 1 y menor a " + RegistroProductos.Productos.Count);
-                    
                 }
             }
 
@@ -147,24 +146,30 @@ namespace AgregarCarrito_openShop
                         {
                             int contadorPedidos = 1;
                             Console.WriteLine("OPEN SHOP - Lista de pedidos");
-                            
-                            if (Ventas.Count > 0)
+
+                            bool hayVentas = false;
+                            foreach (var venta in Ventas)
                             {
-                                foreach (var venta in Ventas)
+                                if(venta.pedidoPreparado == false)
                                 {
-                                    Console.WriteLine("\n-Pedido N°:"  +contadorPedidos);
+                                    Console.WriteLine("\n-Pedido N°:" + contadorPedidos);
                                     Console.WriteLine("-Fecha:" + venta.Fecha.ToShortDateString());
-                                    venta.Carrito.MostrarCarrito();
-                                    venta.FormasPagos.MostrarFormasPagos();
+                                    
+                                    foreach (var producto in venta.Productos)
+                                    {
+                                        var cantidad = producto.Cantidad;
+                                        var nombre = producto.Producto.Nombre;
+                                        var marca = producto.Producto.Marca;
+                                        System.Console.WriteLine(" "+ cantidad + "x " + nombre +" "+ marca);
+                                    }
                                     contadorPedidos++;
+                                    venta.pedidoPreparado = true;
+                                    hayVentas = true;
                                     Console.WriteLine("_________________________________________________");
                                 }
                             }
-                            else
-                            {
-                                Console.WriteLine("No hay pedidos registrados");
-                            }
 
+                            if(!hayVentas) Console.WriteLine("\nNo hay pedidos registrados"); 
                             break;
                         }
 
@@ -229,7 +234,7 @@ namespace AgregarCarrito_openShop
             var prodEnCarrito = new ProductoEnCarrito();
             prodEnCarrito.Producto = producto;
             prodEnCarrito.Cantidad = cantidad;
-
+           
             Productos.Add(prodEnCarrito);
         }
 
@@ -265,19 +270,24 @@ namespace AgregarCarrito_openShop
     class Venta
     {
         public FormasPago FormasPagos { get; set; }
+        public List<ProductoEnCarrito> Productos;
         public Carrito Carrito { get; set; }
         public DateTime Fecha { get; set; }
+        public decimal precioTotal { get; set; }
+        public bool pedidoPreparado { get; set; }
 
-        public Venta(List<ProductoEnCarrito> Productos, FormasPago formasPago)
+        public Venta(List<ProductoEnCarrito> productos, FormasPago formasPago)
         {
-            Carrito = new Carrito();
+            Productos = productos;
             Fecha = DateTime.Now;
             FormasPagos = formasPago;
+            decimal Total = 0;
 
-            foreach (var producto in Productos)
+            foreach(var producto in productos)
             {
-                Carrito.Agregar(producto.Producto, producto.Cantidad);
+                Total = Total + producto.Cantidad * producto.Producto.Precio;
             }
+            precioTotal = Total;
         }
     }
 
